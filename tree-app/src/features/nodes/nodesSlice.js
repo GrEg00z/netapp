@@ -49,13 +49,15 @@ export const nodesSlice = createSlice({
 })
 
 const updateChildrenByNodeId = (nodes, nodeId, children) => {
-    nodes.forEach((node) => {
+    for(let i = 0; i <= nodes.length - 1; i++) {
+        let node = nodes[i];
         if(node.id === nodeId) {
             node.children = children;
+            return false;
         }
-        else if(node.children)
-            updateChildrenByNodeId(node.children, nodeId, children)
-    })
+        else if(node.children && !updateChildrenByNodeId(node.children, nodeId, children))
+            return false;
+    }
 }
 
 export default nodesSlice.reducer
