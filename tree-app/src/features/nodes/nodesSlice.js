@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get } from '../../helpers/http';
+import { getRoot, getChildrenById } from '../../helpers/nodes-api';
 
 export const fetchNodeRoot = createAsyncThunk(
     'nodes/fetchRoot',
     async () => {
-        const response = await get(process.env.REACT_APP_TREE_API_URL + "/nodes/root")
+        const response = await getRoot();
         return response;
     }
 )
@@ -12,7 +12,7 @@ export const fetchNodeRoot = createAsyncThunk(
 export const fetchNodeChildrenById = createAsyncThunk(
     'nodes/children/fetchById',
     async (node) => {
-        const response = await get(process.env.REACT_APP_TREE_API_URL + "/nodes/" + node.id + "/edges")
+        const response = await getChildrenById(node.id);
         return {
             nodeId : node.id,
             children: response
