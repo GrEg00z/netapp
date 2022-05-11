@@ -4,7 +4,7 @@ import { get } from '../../helpers/http';
 export const fetchNodeRoot = createAsyncThunk(
     'nodes/fetchRoot',
     async () => {
-        const response = await get("http://127.0.0.1:5000/api/v1/nodes/root")
+        const response = await get(process.env.REACT_APP_TREE_API_URL + "/nodes/root")
         return response;
     }
 )
@@ -12,7 +12,7 @@ export const fetchNodeRoot = createAsyncThunk(
 export const fetchNodeChildrenById = createAsyncThunk(
     'nodes/children/fetchById',
     async (node) => {
-        const response = await get("http://127.0.0.1:5000/api/v1/nodes/" + node.id + "/edges")
+        const response = await get(process.env.REACT_APP_TREE_API_URL + "/nodes/" + node.id + "/edges")
         return {
             nodeId : node.id,
             children: response
@@ -55,7 +55,7 @@ const updateChildrenByNodeId = (nodes, nodeId, children) => {
             node.children = children;
             return false;
         }
-        else if(node.children && !updateChildrenByNodeId(node.children, nodeId, children))
+        else if(node.children && updateChildrenByNodeId(node.children, nodeId, children) === false)
             return false;
     }
 }
